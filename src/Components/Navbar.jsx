@@ -1,13 +1,27 @@
+import { useState } from "react";
 import styles from "./Navbar.module.css";
+import { useAuth } from "../hooks/auth";
 
 const Navbar = () => {
+  const [darkMode, setDarkMode] = useState(false);
+  //const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  /* const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  }; */
+  const { userToken, signOut } = useAuth();
+  const handleLogout = () => {
+    signOut();
+  };
 
   return (
     <header className="sticky-top">
       {/* //Na linha seguinte deverá ser feito um teste se a aplicação
         // está em dark mode e deverá utilizar navbar-dark bg-dark ou navbar-light bg-light*/}
       <nav
-        className={`navbar navbar-expand-sm navbar-light bg-light`}
+        className={`navbar navbar-expand-sm ${
+          darkMode ? "navbar-dark bg-dark" : "navbar-light bg-light"
+        }`}
         aria-label="Third navbar example"
       >
         <div className="container">
@@ -39,26 +53,35 @@ const Navbar = () => {
                 </a>
               </li>
               <li className={`nav-item ${styles.navBarLink}`}>
+                <a className="nav-link" href="/login" onClick={handleLogout}>
+                  {userToken ? "Logout" : "Login"}
+                </a>
+
                 {/* Se o usuário estiver logado, deverá aparecer um botão de logout
                 que vai apagar o token do localstorage.
                 Se o usuário estiver deslogado, um link fará um redirecionamento, com react-router,
                 ao formulário de login
                 O botão de logout deverá ser testado darkmode
                 se sim, btn-dark, se não, btn-light */}
-                <a className="nav-link" href="/login">
-                  Login
-                </a>
               </li>
               <li className={`nav-item`}>
                 {/* Ao ser clicado, esse botão mudará a aplicação para dark mode ou light mode.
                  Lembre-se de usar um estado no contexto para fazer essa alteração.
                  Na linha seguinte deverá ser feito um teste se a aplicação
                  está em dark mode e deverá utilizar o icone ☀ ou 🌙 e btn-dark ou btn-light*/}
-                <button
-                  className={`btn btn-light${styles.btnStyle
-                    }`}
+                {/* <button
+                  className={`btn ${darkMode? "btn-dark": "btn-light" ${styles.btnStyle}`}}}
+                  onClick={() => setDarkMode(!darkMode)}
                 >
-                  ☀ 🌙{" "}
+                  {☀ 🌙{" "}
+                </button> */}
+                <button
+                  className={`btn ${
+                    darkMode ? "btn-dark" : "btn-light"
+                  } $styles.btnStyle`}
+                  onClick={() => setDarkMode(!darkMode)}
+                >
+                  {darkMode ? " ☀" : "🌙 "}
                 </button>
               </li>
             </ul>

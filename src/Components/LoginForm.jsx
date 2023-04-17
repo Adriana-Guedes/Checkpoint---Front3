@@ -1,33 +1,37 @@
-import { useState } from "react";
 import styles from "./Form.module.css";
+import { useState } from "react";
 import { useAuth } from "../hooks/auth";
-//estado para guardar o que o usuario digitar( login e senha)
+import { useNavigate } from "react-router-dom";
+
 const LoginForm = () => {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
-  const {signIn} = useAuth();
-
-
-
+  const { signIn } = useAuth();
+  const navigate = useNavigate();
+  function goToHome() {
+    navigate("/home");
+  }
   const handleSubmit = (e) => {
-    // para evitar que o submit fique toda hora atualizando o formulario
+    //Nesse handlesubmit você deverá usar o preventDefault,
+    //enviar os dados do formulário e enviá-los no corpo da requisição
+    //para a rota da api que faz o login /auth
+    //lembre-se que essa rota vai retornar um Bearer Token e o mesmo deve ser salvo
+    //no localstorage para ser usado em chamadas futuras
+    //Com tudo ocorrendo corretamente, o usuário deve ser redirecionado a página principal,com react-router
+    //Lembre-se de usar um alerta para dizer se foi bem sucedido ou ocorreu um erro
     e.preventDefault();
-    signIn({ 
-      //renomeando login, pois a função só recebe username
+    signIn({
       username: login,
       password,
-
-  });
-    
+    });
+    goToHome();
   };
 
   return (
     <>
       {/* //Na linha seguinte deverá ser feito um teste se a aplicação
         // está em dark mode e deverá utilizar o css correto */}
-      <div
-        className={`text-center card container ${styles.card}`}
-      >
+      <div className={`text-center card container ${styles.card}`}>
         <div className={`card-body ${styles.CardBody}`}>
           <form onSubmit={handleSubmit}>
             <input
@@ -35,10 +39,7 @@ const LoginForm = () => {
               placeholder="Login"
               name="login"
               required
-            /*função para guardar os digitado pelo usuario
-             + função para atualizar o estado do login, funçao*/
-            onChange={(event) => setLogin(event.target.value)}
-
+              onChange={(event) => setLogin(event.target.value)}
             />
             <input
               className={`form-control ${styles.inputSpacing}`}
@@ -46,9 +47,7 @@ const LoginForm = () => {
               name="password"
               type="password"
               required
-              /*função para guardar os digitado pelo usuario
-             + função para atualizar o estado do password, funçao*/
-            onChange={(event) => setPassword(event.target.value)}
+              onChange={(event) => setPassword(event.target.value)}
             />
             <button className="btn btn-primary" type="submit">
               Send

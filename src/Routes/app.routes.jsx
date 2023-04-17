@@ -7,7 +7,7 @@ import App from "../App"
 
 
 
-//rotas 
+
 
 export function AppRoutes(){
     return (
